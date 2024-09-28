@@ -2,7 +2,7 @@
 
 我们检查 e3372h 调制解调器。
 
-Камера:
+相机：
 ```
 curl -o /usr/sbin/usb_modeswitch http://fpv.openipc.net/files/usb-modeswitch/musl/usb_modeswitch && chmod +x /usr/sbin/usb_modeswitch
 curl -o /usr/lib/libusb-1.0.so.0.3.0 http://fpv.openipc.net/files/usb-modeswitch/musl/libusb-1.0.so.0.3.0 && chmod +x /usr/lib/libusb-1.0.so.0.3.0
@@ -21,7 +21,7 @@ ln -s -f /lib/libc-2.32.so /lib/libc.so
 
 
 <details>
-  <summary>альтернативное хранилище</summary>
+  <summary>替代存储</summary>
   
 ```
 
@@ -31,11 +31,10 @@ ln -s -f /usr/lib/libusb-1.0.so.0.3.0 /usr/lib/libusb-1.0.so
 ln -s -f /usr/lib/libusb-1.0.so.0.3.0 /usr/lib/libusb-1.0.so.0
 ln -s -f /lib/libc-2.32.so /lib/libc.so
 ```
-摄像头：NVR：<详细信息> <摘要>备用存储</摘要> </详细信息>
 
 
 
-Вносим этот текст для e3372h в файл `/etc/network/interfaces.d/eth1` (создадим файл если отсутствует):
+我们将 e3372h 的此文本添加到文件"/etc/network/interfaces.d/eth1"中（如果该文件丢失，我们将创建该文件）：
 ```
 auto eth1
 iface eth1 inet dhcp
@@ -46,12 +45,13 @@ iface eth1 inet dhcp
     pre-up sleep 2
 ```
 
-我们将 e3372h 的此文本添加到文件“/etc/network/interfaces.d/eth1”中（如果该文件丢失，我们将创建该文件）：我们扭曲调制解调器，尝试“ifup eth1”或重新启动。如果网络连接正常（“ip a”中有eth1），在接口中我们可以将手动替换为自动。
+我们调整调制解调器，尝试"ifup eth1"或重新启动。如果网络连接正常（"ip a"中有eth1），在接口中我们可以将手动替换为自动。
 
-#### 问题 如果 usb_modeswitch 将调制解调器切换到 cdc_ethernet，则当系统重新启动（例如通过重新启动）时，接口不会启动 - 错误 ip: SIOCGIFFLAGS: No such device。因此，如果需要完全重新启动系统以使调制解调器正常工作，则需要在重新启动之前切断调制解调器的电源。
+#### 问题 
+如果 usb_modeswitch 将调制解调器切换到 cdc_ethernet，则当系统重新启动（例如通过重新启动）时，接口不会启动 - 错误 ip: SIOCGIFFLAGS: No such device。因此，如果需要完全重新启动系统以使调制解调器正常工作，则需要在重新启动之前切断调制解调器的电源。
 
-### Результат
-Модем e3372h с прошивкой hilink должен отобразиться сетевым интерфейсом eth1 и при вставленной работоспособной sim-карте раздавать интернет на камеру:
+### 结果
+带有 hilink 固件的 e3372h 调制解调器应显示为 eth1 网络接口，并且插入有效的 SIM 卡后，将互联网分配给摄像机：
 ```
 Trying to send message 1 to endpoint 0x01 ...
  OK, message successfully sent

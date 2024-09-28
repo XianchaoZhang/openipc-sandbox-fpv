@@ -1,4 +1,5 @@
-# sandbox-fpv 用于 FPV 实验的沙盒。电报群：`https://t.me/+BMyMoolVOpkzNWUy` | [链接](https://t.me/+BMyMoolVOpkzNWUy)
+# sandbox-fpv
+Sandbox for FPV experiments. Telegram-group: [link](https://t.me/+BMyMoolVOpkzNWUy)
 
 ## 新闻
 * `2023.07.26` - 通过 4G 调制解调器设置 FPV 链接。
@@ -49,7 +50,7 @@
 * ~~通过 mavlink-router 启动遥测路由。~~
 * ~~寻找通过 mavlink 控制摄像头的方法。~~。
 * 寻找通过 hdmi 输出视频和 osd 的方法。
-* ~~~在多个摄像头之间切换，其中一个是带有 wfb-ng 的主摄像头，其余的都是从摄像头。~~~
+* ~~在多个摄像头之间切换，其中一个是带有 wfb-ng 的主摄像头，其余的都是从摄像头。~~
 * 开发摄像头扩展板：bec 5v/3.3v；usb 集线器、uart、wifi/调制解调器功率晶体管、microSD。
 * 开发变焦镜头控制板和控制市售电路板的方法。
 * 开发通过 wfb-ng 从地面控制的稳定万向架。
@@ -69,11 +70,11 @@
 
 * `04/05/2023` - 在 rcjoystick 中[添加](rcjoystick.md#rssi) 功能，用于在 rssi 中显示数据包丢失（链接质量）。
 
-* `04/04/2023` - Majestic Streamer 已添加到 OpenIPC，现在 h265 cbr（恒定比特率）适用于 ivg-g2s 相机。这提供了更清晰的图像并显着减少了噪音。同时，链接启动流程也发生了变化。主要服务现在是带有配置“/etc/datalink.conf”的“S98datalink”，并且 wfb 现在通过“/usr/bin/wifibroadcast”启动。这些文章已被更正以适应这一创新。
+* `04/04/2023` - Majestic Streamer 已添加到 OpenIPC，现在 h265 cbr（恒定比特率）适用于 ivg-g2s 相机。这提供了更清晰的图像并显着减少了噪音。同时，链接启动流程也发生了变化。主要服务现在是带有配置"/etc/datalink.conf"的"S98datalink"，并且 wfb 现在通过"/usr/bin/wifibroadcast"启动。这些文章已被更正以适应这一创新。
 
-* `04/01/2023` - 由于某些情况，我的相机和录音机中的 wfb-ng 被 [OpenHD](https://github.com/OpenHD/wifibroadcast/) 的替代品替换。 [此处](wfbopenhd.zip) 用于在 buildroot OpenIPC 中进行组装的包。 shell 包装器通过存在“link_id”参数来考虑这两个选项，而 OpenHD 实现中不需要该参数。 [存档](https://github.com/OpenIPC/sandbox-fpv/blob/master/wfb.zip) 以及两个选项的二进制文件。
+* `04/01/2023` - 由于某些情况，我的相机和记录仪中的 wfb-ng 被 [OpenHD](https://github.com/OpenHD/wifibroadcast/) 的替代品替换。 [此处](wfbopenhd.zip) 用于在 buildroot OpenIPC 中进行组装的包。 shell 包装器通过存在"link_id"参数来考虑这两个选项，而 OpenHD 实现中不需要该参数。 [存档](https://github.com/OpenIPC/sandbox-fpv/blob/master/wfb.zip) 以及两个选项的二进制文件。
 
-## 注释
+## Notes
 
 * [关于在 gk7205v200 摄像机和 hi3536ev100 (dv100) 录像机上设置链接的注意事项](notes_link_gk7205v200_hi3536ev100.md)
 * [OpenIPC 上相机 gk7205v200 固件说明](notes_start_ivg-g2s.md)
@@ -83,17 +84,17 @@
 * [关于从地面通过RC通道控制相机的注意事项](notes_cam_control.md)
 * [空中切换两个摄像头](note-two-cameras-switched.md)
 * [gk7502v200遥测引导加载程序，重启时不会挂起相机](gk7205v200_u-boot-7502v200-for-telemetry.md)
-* [从录音机前面板管理按钮](nvr_gpio.md)
+* [从记录仪前面板管理按钮](nvr_gpio.md)
 * [通过 USB 连接和设置平板电脑或智能手机以进行视频和 OSD](usb-tethering.md)
 * [通过平板电脑的AP通过wifi连接平板电脑和录像机](note-nvr-tab-ap.md)
-* [通过 ethernet-usb-device 将平板电脑连接到录音机](usb-eth-modem.md)
+* [通过 ethernet-usb-device 将平板电脑连接到记录仪](usb-eth-modem.md)
 * [使用设备作为摇杆通过mavlink传输RC通道](rcjoystick.md)
 * [关于 RSSI 模拟](rcjoystick.md#rssi)
 * [SBUS 转 USB 操纵杆，用于使用带有 sbus 接收器的任何设备](sbus-to-usb-操纵杆)
 * [通过4G调制解调器设置FPV链接](lte-fpv.md)
 * [在带有 fpv、lite 固件的相机上安装 usb_modeswitch](usb-modeswitch.md)
 
-#### 各种各样的
+#### 杂项
 * [用于相机的 inav（单向 msp）的 mavfwd](user_TipoMan/mavfwd_mavlink2.tar?raw=true)
 * [在 Windows 上和 MP 中显示视频](gstlaunch_on_windows.md)
 * [禁用hi3536dv100录像机上的看门狗](note_nvr_wdt.md)
@@ -107,7 +108,7 @@
 * ~~通过mavlink-router启动遥测路由。~~
 * ~~正在寻找通过mavlink控制相机的方法~~。
 * 寻找通过hdmi输出视频和OSD的方法。
-* ~~~多台相机之间切换，其中一台用wfb-ng为主，其余为从。~~~
+* ~~多台相机之间切换，其中一台用wfb-ng为主，其余为从。~~
 * 开发摄像头扩展板：bec 5v/3.3v； USB 集线器、UART、wifi/调制解调器功率晶体管、microSD。
 * 开发变焦镜头控制板和市售板的控制方法。
 * 开发通过 wfb-ng 从地面控制的稳定万向节。
