@@ -1,43 +1,43 @@
 
-### Заметки по постройке видеолинка с двухсторонней телеметрией mavlink
+### 使用双向遥测 mavlink 构建视频链路的注意事项
 
-Воздушная часть линка представляет из себя камеру [gk7205v200](https://sl.aliexpress.ru/p?key=e1sTwWg) с подключенным по USB wifi-адаптером на以及 rtl8812au，例如 ASUS USB AC-56 以及 [недорогого более слабого адаптера с ali](https://sl.aliexpress.ru/p?key=8CsTwDB)。 Наземная часть - это [видеорегистратор](https://sl.aliexpress.ru/p?key=L1sTwWG) на базе чипа hisilicon hi3536dv100 либо ev100, к которому точно так该产品是 USB 接口的 RTL8812AU 和 RTL8814AU。 Для РФ дешевле 和 быстрее заказать камеру 和 регистратор у [@ser177](https://t.me/ser177)。 Данная статья описывает нюансы создания подобного линка, и является дополнением к [этой статье](https://github.com/OpenIPC/wiki/blob/master/ru/fpv.m d).
+链路的空中部分是一个相机 [gk7205v200](https://sl.aliexpress.ru/p?key=e1sTwWg)，带有通过 rtl8812au 芯片连接的 USB wifi 适配器，例如华硕 USB AC-56 或 [ ali 的较弱适配器](https://sl.aliexpress.ru/p?key=8CsTwDB)。地面部分是基于海思hi3536dv100或ev100芯片的[DVR](https://sl.aliexpress.ru/p?key=L1sTwWG)，还通过USB连接rtl8812au或rtl8814au适配器。对于俄罗斯联邦，从 [@ser177](https://t.me/ser177) 订购摄像机和录像机更便宜、更快捷。本文介绍了创建此类链接的细微差别，并且是对[本文](https://github.com/OpenIPC/wiki/blob/master/ru/fpv.md)的补充。
 
 ![link_hw](https://github.com/OpenIPC/sandbox-fpv/raw/master/notes_files/link_hw.png)
 
-### 胜利者
+### 可能性
 
-Данный линк способен передавать видео [(youtube)](https://youtu.be/ldfQ9CLE86I) с воздушной части форматом (разрешение@частота кадров) 19 20x1080@30 和 1280x720@50 和 h264 和 h265 和 mavlink 都适用。 Общая схема процессов для передачи видео выглядит так:
+此链接能够使用 h264 或 h265 编解码器和 mavlink 从机载部分传输视频 [(youtube)](https://youtu.be/ldfQ9CLE86I)，格式为（分辨率@帧速率）1920x1080@30 或 1280x720@50两个方向的遥测。视频传输的一般流程图如下：
 
 ![视频](https://github.com/OpenIPC/sandbox-fpv/raw/master/notes_files/video.png)
 
-视频中的内容是 момент возможна двумя способами。 Классический - 流媒体`Majestic` через udp порт 5600 засылает RTP/h264 или RTP/h265 поток в [wfb-ng](https://github.com/svpcom/wfb-ng) или [OpenHD-wfb](https:/ /github.com/OpenHD/wifibroadcast) 在 землю 上使用，在 PC 上使用 wfb 和 отправляется воспроизведения埃特 /包括 LAN 和 USB 以太网（网络共享）。 Формат RTP свободно воспроизводится программами для GS, такими как [QGroundControl](https://github.com/mavlink/qgroundcontrol), [Mission Planner](https://ardupilot.org/planner/), [QOpenHD](https: //openhdfpv.org/download/) 和 [FPV-VR](https://github.com/Consti10/FPV_VR_OS)。与 HDMI 解决方案相关的技术，包括 специализированном 和 обычн GStreamer 是在 Raspberry Pi 上使用的，适用于 Raspberry Pi。
+目前可以通过两种方式进行视频传输。经典 - 流媒体 `majestic` 通过 udp 端口​​ 5600 将 RTP/h264 或 RTP/h265 流发送到 [wfb-ng](https://github.com/svpcom/wfb-ng) 或 [OpenHD-wfb](https:// /github.com/OpenHD/wifibroadcast）用于传输到地面，由 wfb 响应接收并通过 LAN 或 USB 以太网（网络共享）发送到 PC 或平板电脑/智能手机进行播放。 RTP格式可以由GS程序自由复制，例如[QGroundControl](https://github.com/mavlink/qgroundcontrol)、[Mission Planner](https://ardupilot.org/planner/)、[QOpenHD](https : //openhdfpv.org/download/) 或 [FPV-VR](https://github.com/Consti10/FPV_VR_OS)。但目前还无法将其输出到录像机的 HDMI 端口，因为它是在带有自己的 SDK 的专用芯片上构建的，并且这不能以通常的方式完成，例如通过 GStreamer，像往常一样，视频是Raspberry Pi 的情况下的输出。
 
-<sub>QGroundControl 是一款 H265 的 QGroundControl，它可以在 зависании картинки 和 меню 中使用。 Это лечится до перезапуска программы выбором потока видео h264 和 назад h265.</sub>
+<sub>QGroundControl在播放h265时有一个bug，表现为进入菜单时图像冻结。通过选择视频流 h264 并返回 h265，可以在重新启动程序之前解决此问题。</sub>
 
-Andrey Bezborodov 和 OpenIPC предоставил на тесты скомпилированные примеры *vencoder* 和 *vdecoder*, вытащенные из Hisilicon SDK 和 оригинальном виде сположенные [тут](https://github.com/OpenIPC/silicon_research)。 `venc` запускается на камере и формирует поток h264 с фрагментацией HAL вместо `majestic`, `vdec` на регистраторе выводит эток HDMI。屏幕上显示了 OSD 和 OSD 信息。 Это очень перспективный путь，поскольку имеет возможности к снижению задержки передачи видео。时间为 110 至 130 米。 На "классической схеме" задержки составляют обычно от 150 до 230 мсек, [вот пример 133 мсек](https://github.com/OpenIPC/sandbox-fpv/raw/master/notes_files/ Screenshot_1.png), в зависимости от разрешения和 наземных условий воспроизведения。
+OpenIPC 团队的 Andrey Bezborodov 提供了 *vencoder* 和 *vdecoder* 的编译示例用于测试，这些示例是从 Hisilicon SDK 中提取的，并以其原始形式位于[此处](https://github.com/OpenIPC/silicon_research)。 `venc` 在摄像机上运行，​​生成带有 HAL 碎片的 h264 流，而不是 `majestic`，录像机上的 `vdec` 将此流输出到 HDMI。一切正常，但当然没有 OSD，第三方播放器无法再现这种非标准流。这是一种非常有前途的方式，因为它有可能减少视频传输延迟。目前它的范围是 110 到 130 毫秒。在“经典方案”中，延迟通常为 150 到 230 毫秒，[这里是 133 毫秒的示例](https://github.com/OpenIPC/sandbox-fpv/raw/master/notes_files/Screenshot_1.png)，取决于分辨率和陆地繁殖条件。
 
-Этот вопрос можно решить, "научив" `vdec` распознавать RTP/h26[4-5] с помощью библиотеки *libavformat/avformat.h* 和 по прежнему "стримить" на камере через “雄伟”。 Для этого нужна помощь программиста C++，если вы желаете помочь проекту с этим - [обращайтесь](https://t.me/+BMyMoolVOpkzNWUy)。
+这个问题可以通过使用 *libavformat/avformat.h* 库“教”“vdec”识别 RTP/h26[4-5] 并仍然通过“majestic”在相机上“流”来解决。如果您想帮助该项目，这需要 C++ 程序员的帮助 - [联系](https://t.me/+BMyMoolVOpkzNWUy)。
 
-*GStreamer* 上的 Mission Planner h265: `udpsrc port=5600 buffer-size=32768 !应用程序/x-rtp！ rtph265depay！ avdec_h265 ！视频转换！视频/x-raw，格式=BGRA！ appsink名称=outsink`
+在 Mission Planner 上设置 *GStreamer* 以播放 h265 的示例： `udpsrc port=5600 buffer-size=32768 !应用程序/x-rtp！ rtph265depay！ avdec_h265 ！视频转换！视频/x-raw，格式=BGRA！ appsink名称=outsink`
 
-适用于 5,2ghz 和 5,85ghz，上 atheros 2.3 - 2.4ghz。
+atheros 2.3 - 2.4ghz 上支持 5.2ghz 到 5.85ghz 的频率。
 
-### Как все запускается？
+### 一切是如何开始的？
 
-运行 linux 系统，并使用 `init.d` 和 `S98datalink`，以及 является отправной точкой。 Он запускает скрипт `/usr/bin/wifibroadcast`, который определяет через lsusb какой адаптер подключен, загружает его драйвер, т в режим монитора, стартует `wfb` на передачу или прием, для наземки определя подключения по usb, второму адаптеру wifi или与`udp_addr` 相同。 Данные о настройках он берет из `/etc/wfb.conf`。 Также, при включенной телеметрии, он запускает скрипт `/usr/bin/telemetry`, который занимается тем же но для телеметрийныхй целе , беря настройки из `/etc/telemetry.conf`。
+当linux启动时，“S98datalink”服务会从“init.d”的服务中启动，这是起点。它运行脚本“/usr/bin/wifibroadcast”，该脚本通过 lsusb 确定连接了哪个适配器，加载其驱动程序，切换到监视模式，启动“wfb”进行传输或接收，对于地面，它确定通过 USB 的连接，第二个wifi 适配器或刚刚开始将视频传输到“udp_addr”。它从“/etc/wfb.conf”获取设置数据。此外，当启用遥测时，它会运行脚本“/usr/bin/telemetry”，该脚本执行相同的操作，但出于遥测目的，从“/etc/telemetry.conf”获取设置。
 
-### Нюансы на камере
+### 相机上的细微差别
 
-Для данной камеры существует два драйвера сенсора - “медленный” 1080p@30fps 和 “быстрый” 720p@50fps。 Их можно переключать на ходу скриптами из примеров в [root](https://github.com/OpenIPC/sandbox-fpv/tree/master/gk7205v200/root), если залить на камеру ["быс трый" драйвер](gk7205v200/lib /sensors/libsns_imx307_2l_720p.so) под отдельным именем 和 исправить к нему путь в его конфиге [`imx307_i2c_2l_720p_50fps.ini`](gk7205v200/etc/sensors/imx307_i2c_2l_720p_50fps.ini#L15)。 Все файлы по данной камере находятся в каталоге `gk7205v200`。 Если запускать камеру с "быстрым" драйвером в настройках Majestic, то передача видео идет рывками, поэтому при старте камеры S95goke 的型号为“медленного”драйвера，после чего уже можно включить“быстрый”。 На текущий момент [ведется работа](notes_cam_control.md) по управлению подобными настройками камеры через RC каналы в mavlink。
+该相机有两个传感器驱动程序 - “慢速”1080p@30fps 和“快速”720p@50fps。如果您上传 [“快速”驱动程序]，可以使用 [root](https://github.com/OpenIPC/sandbox-fpv/tree/master/gk7205v200/root) 中的示例脚本即时切换它们(gk7205v200/lib) 到相机 /sensors/libsns_imx307_2l_720p.so) 以单独的名称并在其配置中更正其路径 [`imx307_i2c_2l_720p_50fps.ini`](gk7205v200/etc/sensors/imx307_i2c_2l_720p_50fps.ini# L15）。该相机的所有文件都位于“gk7205v200”目录中。如果您在雄伟设置中使用“快”驱动程序启动相机，视频传输会很不稳定，因此当您通过“S95goke”启动相机时，“慢”驱​​动程序的设置会被注册，之后您就可以打开就“快”而言。目前[工作正在进行中](notes_cam_control.md) 通过 mavlink 中的 RC 通道管理此类相机设置。
 
-### Нюансы на регистраторе Так как регистратор относительно камеры имеет шикарные 16б памяти spi flash, из которых мы можем использовать около 5мб, то нам доступен [драйвер адаптеров RTL](https://github.com/OpenIPC/sandbox-fpv/tree /master/hi3536dv100/88XXau-ko) который поддерживает rtl8814au 是 rtl8812au 的缩写。 Для этого нужно залить его поверх штатат​​ного в `lib/modules/4.9.37/extra`, не забыв переименовать.
+### 录像机的细微差别由于摄像机具有华丽的 16 MB spi 闪存，其中我们可以使用大约 5 MB，[RTL 适配器驱动程序](https://github.com/OpenIPC/sandbox-fpv /tree）可供我们使用/master/hi3536dv100/88XXau-ko），除了流行的rtl8812au之外，它还支持rtl8814au。为此，您需要将其上传到 `lib/modules/4.9.37/extra` 中的标准版本之上，不要忘记重命名它。
 
-Перекомпилирован [`mavlink-router`](https://github.com/OpenIPC/sandbox-fpv/tree/master/hi3536dv100/usr/bin), так как комплектный из прошивки собран на musl для водзу шной части (где он не используется) ），一个 glibc 上的程序。
+重新编译[`mavlink-router`](https://github.com/OpenIPC/sandbox-fpv/tree/master/hi3536dv100/usr/bin)，因为完整的固件是在musl中组装的空中部分(在哪里)未使用），录音机固件基于glibc。
 
-Также необходимо [отключить hisilicon watchdog](note_nvr_wdt.md)。
+还需要【禁用海思看门狗】(note_nvr_wdt.md)。
 
-### Нюансы телеметрии Текущая схема работы телеметрии выглядит так:
+### 遥测的细微差别 当前的遥测方案如下所示：
 
 ![遥测]（https://github.com/OpenIPC/sandbox-fpv/raw/master/notes_files/telemetry.png）
 
@@ -57,27 +57,27 @@ Address = 127.0.0.1
 Port = 14551
 ```
 
-~~С применением mavlink-routerd 为 udp、поскольку он не умеет ь rx/tx udp порты в рамках одного 端点，как того требует wfb, будучи запущенным разными процессами `telemetry_rx` 和 `telemetry_tx`。 ~~ Будучи запущенным разными процессами、`telemetry_rx` 和 `telemetry_tx` используют разные порты для приема 和 передачи данных (кстати, это просто символьные ссылки на wfb_rx 和 wfb_tx, создаваемые скриптом [запуска телеметрии](hi3536dv100/usr/bin/telemetry)), 和mavlink-路由器требует в [конфигурациии](hi3536dv100/etc/mavlink.conf) два UDP-endpoint, которые должны быть сгуппированны: Остальные 端点 нужны для связи с前身为 tcp:5760，前身为 Mission Planner。 Для [приложенного конфига](hi3536dv100/etc/mavlink.conf) в настройках UDP-линка нужно указать адрес регистратора:
+~~通过使用 mavlink-routerd，目前只能通过 udp 进行单向遥测，因为它不能按照 wfb 的要求在同一端点内使用不同的 rx/tx udp 端口​​，由不同的进程 `telemetry_rx` 启动，并且`telemetry_tx`。 ~~ 由不同的进程启动，`telemetry_rx` 和 `telemetry_tx` 使用不同的端口来接收和传输数据（顺便说一句，这些只是由 [telemetry launch] 脚本创建的 wfb_rx 和 wfb_tx 的符号链接（ hi3536dv100/usr/bin/telemetry)) ，并且 mavlink-router 在 [配置](hi3536dv100/etc/mavlink.conf) 中需要两个必须分组的 UDP 端点： 其余端点需要与地面站通信，用于例如 tcp:5760 用于接收来自 Mission Planner 的连接。对于UDP链接设置中的[附加配置](hi3536dv100/etc/mavlink.conf)，您需要指定注册器地址：
 
 ![udp-qgc](notes_files/qgc-udp-settings.png)
 
-在 /usr/bin/telemetry 中安装了 mavlink-routerd 和 uart 解决方案。
+剩下的就是切换到 /usr/bin/telemetry 以使用 mavlink-routerd，并且您不再需要连接注册器的 uart。
 
 ```
   /usr/bin/mavlink-routerd -c /etc/mavlink.conf &
   #/usr/sbin/mavfwd --master ${serial} --baudrate ${baud} --out 127.0.0.1:${port_tx} --in 127.0.0.1:${port_rx} &
 ```
 
-Если же вы хотите использовать uart, то можете настроить на /dev/ttyAMA0 или переключиться на mavfwd.如果您在 /etc/inittab 中使用 ssh 或 uart，则可以使用以下命令：
+如果要使用uart，可以将端点设置为/dev/ttyAMA0或切换到mavfwd。在这种情况下，您需要通过注释掉以下行来禁用 /etc/inittab 中 uart 的 ssh 控制台：
 
 ```
 #console::respawn:/sbin/getty -L  console 0 vt100 # GENERIC_SERIAL
 ```
-Тогда телеметрия станет доступна на UART регистратора взамен или дополнительно к udp по сети, и ее можно будет использоват USB-UART 是串行端口。 QGC 提供了一系列先进的流量控制功能，包括高级流量控制、高级流量控制和高级流量控制。
+然后，遥测将在记录仪的 uart 上可用，而不是通过网络的 udp，或者除了网络上的 udp 之外，还可以通过 USB-uart 适配器将其用作串行端口。在QGC上，连接串口需要提前关闭流控，否则会加载一半左右的参数并报错。
 
-Я скомпилировал `mavfwd` для регистратора, поддерживающий скорости b230400, b500000, b921600 和 b1500000, для поддержки е высокой скорости при работе с Mission Planner, проверил на b500000 при b115200 / b230400 на камере. Для регистратора его можно забрать [здесь](hi3536dv100/usr/sbin)。 Для камеры: [здесь](https://github.com/OpenIPC/sandbox-fpv/tree/master/gk7205v200/usr/sbin)。 [Исходник](https://github.com/OpenIPC/sandbox-fpv/tree/master/mavfwd)。 На камере удалось получить устойчивую связь с полетником на скорости 230400，выше stm32f4 не смог。 Установка скорости полетника под ardupilot производится параметром `SERIALx_BAUD`，请输入：“230”。 Также не забывайте установить параметр `TELEM_DELAY` на 10 (секунд задержки перед началом выдачи телеметрии), иначе я может остановит загрузчик。 К сожалению, если в полете камера перезапустится по какой то причине отдельно от полетника, то телеметрия ~~не даст ей агрузиться~~ может не дать ей загрузиться. ~~Необходимо доработать загрузчик u-boot, чтобы он не останавливал загрузку по любому символу.~~ ~~C [новым u-boot](gk7205v200_u-boot-7 502v200-for-telemetry.md),~~ который прерывается только по Ctrl +C，并`bootdelay=0` этой проблемы по тестам нет。该 U-boot 可以支持 FPV 和 OpenIPC。
+我为支持 b230400、b500000、b921600 和 b1500000 速度的记录器编译了“mavfwd”，以在运行 Mission Planner 时支持更高的速度，并在相机上使用 b115200/b230400 在 b500000 上进行了测试。对于录音机，您可以在[此处](hi3536dv100/usr/sbin)获取。对于相机：[此处](https://github.com/OpenIPC/sandbox-fpv/tree/master/gk7205v200/usr/sbin)。 [来源](https://github.com/OpenIPC/sandbox-fpv/tree/master/mavfwd)。相机能够以230400的速度与飞行员建立稳定的连接，但无法高于stm32f4。设置 ardupilot 的飞行速度是使用“SERIALx_BAUD”参数完成的，在我的例子中：“230”。另外，不要忘记将“TELEM_DELAY”参数设置为 10（遥测开始前的秒延迟），否则遥测可能会停止引导加载程序。不幸的是，如果在飞行过程中相机因某种原因与飞行员分开重新启动，那么遥测~~将不允许它加载~~可能不允许它加载。 ~~需要修改u-boot加载程序，使其不会在任何字符处停止加载。~~ ~~C [new u-boot](gk7205v200_u-boot-7502v200-for-telemetry.md),~~仅通过Ctrl+C中断，并且`bootdelay=0`测试中不存在此问题。此 U-boot 已包含在所有 OpenIPC FPV 固件中。
 
-Также я [заложил в него](notes_cam_control.md) основы для наблюдения за выбранными каналами RC mavlink и передачи их значений при ``/root/channels.sh` 相当于 $1 (канал) 和 $2 (значение)。
+我还[放入](notes_cam_control.md)监视所选RC mavlink通道并在更改为“/root/channels.sh”时将其值作为参数$1（通道）和$2（值）传递的基础。
 
 ### Текущие проблемы
 Если при загрузке камеры в majestic выбран "быстрый" драйвер 720p, то видео идёт рывками, поэтому в S95goke (автозапуск majestic) перед стартом идёт установка "обычного" драйвера 1080p. Если вы хотите использовать при загрузке камеры 720p@50 по умолчанию, вставьте после загрузки majestic вызов скрипта переключения в [`/etc/init.d/S95majestic`](gk7205v200/etc/init.d/S95majestic#L35) в функции `load_majestic`:

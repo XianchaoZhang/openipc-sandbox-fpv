@@ -35,7 +35,7 @@ setenvda; setenv du; setenv dr; setenv dw; setenv dl; setenv dc; setenv up; sete
 saveenv #save the new variable environment
 printenv #see if everything is ok
 ```
-该记录器的引导加载程序没有密码，您可以在启动时多次按 Ctrl+C，通过 uart/115200 波特率访问它，同时通过 usb-uart 3v3 适配器（ftdi、ch340）连接到记录器的调试 uart 端口。调试 uart 位于电路板另一边的 VGA 连接器对面，标记为 gnd/tx/rx。我们不需要刷新引导加载程序，也不需要刻录。我们的 ENV（环境变量）与出厂环境变量不同，但直接从引导加载程序逐行安装更容易：芯片的原始环境和完整转储（恢复时出厂固件的 16mb 备份）可从[此处]（https://github.com/OpenIPC/sandbox-fpv/tree/master/hi3536dv100/original_firmware）获得。
+该记录器的引导程序没有密码，您可以在启动时多次按 Ctrl+C，通过 uart/115200 波特率访问它，同时通过 usb-uart 3v3 适配器（ftdi、ch340）连接到记录器的调试 uart 端口。调试 uart 位于电路板另一边的 VGA 连接器对面，标记为 gnd/tx/rx。我们不需要刷新引导程序，也不需要刻录。我们的 ENV（环境变量）与出厂环境变量不同，但直接从引导程序逐行安装更容易：芯片的原始环境和完整转储（恢复时出厂固件的 16mb 备份）可从[此处]（https://github.com/OpenIPC/sandbox-fpv/tree/master/hi3536dv100/original_firmware）获得。
 
 您可能已经注意到，uk 和 ur 变量存储了 uImage 和 rootfs 的宏，它们从 serverip 变量中指定的 [tftp 服务器](https://pjo2.github.io/tftpd64/) 下载。所有地址都与 bootargs 变量相对应，该变量的内容指定了启动时内核的文件系统布局。该布局与 goke/hisilicone 相机的布局不同，我们的核心与 lite/fpv 相同，大小为 2MB，但文件系统大小为 8MB，与 ultimate 一样。剩余的 ~5MB 由覆盖层使用（您对相对于原始 rootfs 的文件所做的更改）。对于固件，请使用发布页面 [openipc/firmware](https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3536dv100-nor-fpv.tgz) 中的官方版本。存档包含内核和文件系统。
 

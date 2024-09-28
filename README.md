@@ -5,7 +5,7 @@
 
 * `01.07.2023` - 关于 imx335 gk7205v300 相机的简短说明。关于遥测的波特率。
 
-* `2023.06.22` - 终于解决了 30fps 下画面卡顿的问题。
+* `2023.06.22` - 终于解决了 30fps 时画面卡顿的问题。
 
 * `06.04.2023` - 为带有板载 u-boot 的 ivg-g2s 添加了耦合器固件。
 
@@ -59,29 +59,56 @@
 ## Russians:
 
 ## 新闻
-* `26.07.2023` - Настройка FPV-линка [через 4G модем](lte-fpv.md)。
+* `07.26.2023` - 设置 FPV 链接 [通过 4G 调制解调器](lte-fpv.md)。
 
-* `01.07.2023` - Короткая заметка о камере [imx335 gk7205v300](notes_imx335_gk7205v300.md)。 О [波特率 телеметрии](note_telemetry_baud.md)。
+* `07/01/2023` - 关于相机的简短说明 [imx335 gk7205v300](notes_imx335_gk7205v300.md)。关于[遥测波特率](note_telemetry_baud.md)。
 
-* `22.06.2023` - Наконец [решилась](gkrcparams.md) проблема с дерганностью картинки на 30fps。
+* `06/22/2023` - 终于[解决了](gkrcparams.md) 30fps 时图片抖动的问题。
 
-* `06.04.2023` - Добавлена [прошивка Coupler](notes_start_ivg-g2s.md#L33) для ivg-g2s с u-boot на борту.
+* `04/06/2023` - 为带有 u-boot 的 ivg-g2s 添加了[情侣固件](notes_start_ivg-g2s.md#L33)。
 
-* `05.04.2023` - В rcjoystick [добавлен](rcjoystick.md#rssi) функционал для целей отображения потерь пакетов (качествалинка) в rssi.
+* `04/05/2023` - 在 rcjoystick 中[添加](rcjoystick.md#rssi) 功能，用于在 rssi 中显示数据包丢失（链接质量）。
 
-* `04.04.2023` - OpenIPC“допилили”стример Majestic，теперь на камере ivg-g2s работает h265 cbr (постоянный битрейт)。 Это дало более чистую картинку 和 значительное уменьшение шума. Вместе с этим были внесены изменения в процесс запуска линка。 Основным сервисом теперь является `S98datalink` с конфигом `/etc/datalink.conf`，以及 запуск wfb теперь производитсячерез `/usr/bin/wifibroadcast`。 Статьи были исправлены под это нововведение。
+* `04/04/2023` - Majestic Streamer 已添加到 OpenIPC，现在 h265 cbr（恒定比特率）适用于 ivg-g2s 相机。这提供了更清晰的图像并显着减少了噪音。同时，链接启动流程也发生了变化。主要服务现在是带有配置“/etc/datalink.conf”的“S98datalink”，并且 wfb 现在通过“/usr/bin/wifibroadcast”启动。这些文章已被更正以适应这一创新。
 
-* `01.04.2023` - В связи с некоторыми обстоятельствами, wfb-ng был заменен в моих камере и регистраторе на альтернативу от [OpenHD]( https://github.com/OpenHD/wifibroadcast/）。 [Тут](wfbopenhd.zip) 在 buildroot OpenIPC 中运行。此链接包含 OpenHD 中的“link_id”和“link_id”。 [Архив](https://github.com/OpenIPC/sandbox-fpv/blob/master/wfb.zip) с бинарниками обоих вариантов。
+* `04/01/2023` - 由于某些情况，我的相机和录音机中的 wfb-ng 被 [OpenHD](https://github.com/OpenHD/wifibroadcast/) 的替代品替换。 [此处](wfbopenhd.zip) 用于在 buildroot OpenIPC 中进行组装的包。 shell 包装器通过存在“link_id”参数来考虑这两个选项，而 OpenHD 实现中不需要该参数。 [存档](https://github.com/OpenIPC/sandbox-fpv/blob/master/wfb.zip) 以及两个选项的二进制文件。
 
-## Заметки
+## 注释
 
-* [Заметки о настройке линка на камере gk7205v200 和 регистраторе hi3536ev100 (dv100)](notes_link_gk7205v200_hi3536ev100.md) * [Заметки о прошивке камеры gk7205v200 на OpenIPC](notes_start_ivg-g2s.md) * [Заметки о прошивке регистратора hi3536ev100 на OpenIPC](notes_start_hi3536ev100.md) * [Заметка о камере imx335 gk7205v300](notes_imx335_gk7205v300.md) * [Добавляем плавности видео на goke/hisilicon ка мерах](gkrcparams.md) * [Заметка о управлении камерой через RC каналы с наземки](notes_cam_control .md) * [Переключение между двумя камерами в воздухе](note-two-cameras-switched.md) * [Загрузчик под телеметрию для gk7502v200, который не вешает камеру при ребуте](gk7205v200_u-boot- 7502v200-for-telemetry.md) * [Управление кнопками с 前面板 на регистраторе](nvr_gpio.md) * [Подключение и настройка планшета или смартфона для видео 和 OSD по USB](usb-tethering.md) * [Подключение планшета к регистратору по wifi через AP планшета](note-nvr-tab-ap.md) * [Покд] лючение планшета к регистратору через 以太网 USB 设备](usb-eth-modem.md) * [Использование аппаратуры как джойстика для передачи каналов RC через mavlink](rcjoystick.md) * [Про аналог RSSI](rcjoystick.md#rssi) * [SBUS 转 USB 操纵杆 для использования любой аппаратуры с sbus приемником](sbus-至 USB 操纵杆）* [ Настройка FPV-линка через 4G модем](lte-fpv.md) * [Установка usb_modeswitch на камеру с прошивкой fpv, lite](usb-modeswitch.md)
+* [关于在 gk7205v200 摄像机和 hi3536ev100 (dv100) 录像机上设置链接的注意事项](notes_link_gk7205v200_hi3536ev100.md)
+* [OpenIPC 上相机 gk7205v200 固件说明](notes_start_ivg-g2s.md)
+* [OpenIPC上hi3536ev100记录仪固件说明](notes_start_hi3536ev100.md)
+* [关于相机imx335 gk7205v300的说明](notes_imx335_gk7205v300.md)
+* [为国科/海思相机上的视频添加平滑度](gkrcparams.md)
+* [关于从地面通过RC通道控制相机的注意事项](notes_cam_control.md)
+* [空中切换两个摄像头](note-two-cameras-switched.md)
+* [gk7502v200遥测引导加载程序，重启时不会挂起相机](gk7205v200_u-boot-7502v200-for-telemetry.md)
+* [从录音机前面板管理按钮](nvr_gpio.md)
+* [通过 USB 连接和设置平板电脑或智能手机以进行视频和 OSD](usb-tethering.md)
+* [通过平板电脑的AP通过wifi连接平板电脑和录像机](note-nvr-tab-ap.md)
+* [通过 ethernet-usb-device 将平板电脑连接到录音机](usb-eth-modem.md)
+* [使用设备作为摇杆通过mavlink传输RC通道](rcjoystick.md)
+* [关于 RSSI 模拟](rcjoystick.md#rssi)
+* [SBUS 转 USB 操纵杆，用于使用带有 sbus 接收器的任何设备](sbus-to-usb-操纵杆)
+* [通过4G调制解调器设置FPV链接](lte-fpv.md)
+* [在带有 fpv、lite 固件的相机上安装 usb_modeswitch](usb-modeswitch.md)
 
-#### Разное * [mavfwd для inav (односторонний msp) для камеры](user_TipoMan/mavfwd_mavlink2.tar?raw=true) * [Отображение видео на windows и в MP](gstlaunch_on_windows.md) * [ hi3536dv100 上的看门狗](note_nvr_wdt.md) * [Отличный от 115200 波特 на uartе камеры для телеметрии](note_telemetry_baud.md)
+#### 各种各样的
+* [用于相机的 inav（单向 msp）的 mavfwd](user_TipoMan/mavfwd_mavlink2.tar?raw=true)
+* [在 Windows 上和 MP 中显示视频](gstlaunch_on_windows.md)
+* [禁用hi3536dv100录像机上的看门狗](note_nvr_wdt.md)
+* [与遥测相机uart上的115200波特不同](note_telemetry_baud.md)
 
-## Дорожная карта * ~~Запуск видео с передачей с регистратора на пк.~~ * ~~Запуск одно-и двусторонней телеметрии.~~ * ~~Запуск已在 android-планшет 上使用 USB 网络共享。~~ * ~~Сборка和 e3372h + Zerotier 上的 LTE ~~ * ~~Запуск маршрутизации телеметрии через mavlink-router.~~ * ~~Поиск путей управления камерой сквозь mavlink ~~.
-* 播放视频和 osd 屏幕 HDMI。
-* ~~~Переключение между несколькими камерами, где одна ведущая с wfb-ng, а остальные ведомые.~~~ * Разработка платы расширения для камеры: bec 5v/3.3v; USB 集线器、UART、无线网络/调制解调器、microSD。
-* Разработка платы управления зум-объективом 和 способа управления имеющимися в продаже платами.
-* Разработка стабилизирующего подвеса, управляемого с земли сквозь wfb-ng。
+## 路线图
+* ~~启动视频并从录像机传输到电脑。~~
+* ~~启动单向和双向遥测。~~
+* ~~开始通过 USB 网络共享将视频传输到 Android 平板电脑。~~
+* ~~在 e3372h + Zerotier 上构建和测试 LTE 固件~~
+* ~~通过mavlink-router启动遥测路由。~~
+* ~~正在寻找通过mavlink控制相机的方法~~。
+* 寻找通过hdmi输出视频和OSD的方法。
+* ~~~多台相机之间切换，其中一台用wfb-ng为主，其余为从。~~~
+* 开发摄像头扩展板：bec 5v/3.3v； USB 集线器、UART、wifi/调制解调器功率晶体管、microSD。
+* 开发变焦镜头控制板和市售板的控制方法。
+* 开发通过 wfb-ng 从地面控制的稳定万向节。
 
